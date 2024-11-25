@@ -1,0 +1,102 @@
+[
+    {
+        "id": 1,
+        "name": "Dell XPS 13 Laptop",
+        "category": "Cate 1",
+        "description": "Slim and lightweight laptop with high performance.",
+        "quantity": 10,
+        "price": 1500,
+        "status": "In Stock",
+        "image": "uploads\/01.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Samsung Galaxy S21 Smartphone",
+        "category": "Cate 2",
+        "description": "Smartphone with a 108MP camera.",
+        "quantity": 25,
+        "price": 999,
+        "status": "Out of Stock",
+        "image": "uploads\/02.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Sony WH-1000XM4 Headphones",
+        "category": "Cate 2",
+        "description": "Noise-canceling headphones with amazing sound quality.",
+        "quantity": 30,
+        "price": 350,
+        "status": "Out of Stock",
+        "image": "uploads\/03.jpg"
+    },
+    {
+        "id": 4,
+        "name": "iPad Pro 12.9 Tablet",
+        "category": "Cate 1",
+        "description": "Premium tablet with a 12.9-inch display.",
+        "quantity": 15,
+        "price": 1200,
+        "status": "In Stock",
+        "image": "uploads\/04.jpg"
+    },
+    {
+        "id": 5,
+        "name": "Nike Air Max 90 Sneakers",
+        "category": "Cate 2",
+        "description": "Fashionable and comfortable sneakers.",
+        "quantity": 50,
+        "price": 120,
+        "status": "In Stock",
+        "image": "uploads\/05.png"
+    },
+    {
+        "id": 6,
+        "name": "Casio G-Shock Watch",
+        "category": "Cate 1",
+        "description": "Durable sports watch, water-resistant.",
+        "quantity": 40,
+        "price": 100,
+        "status": "In Stock",
+        "image": "uploads\/06.jpg"
+    },
+    {
+        "id": 7,
+        "name": "Blendtec Blender",
+        "category": "Cate 2",
+        "description": "High-power blender, durable and efficient.",
+        "quantity": 12,
+        "price": 400,
+        "status": "Out of Stock",
+        "image": "uploads\/07.png"
+    },
+    {
+        "id": 8,
+        "name": "Uniqlo Basic T-shirt",
+        "category": "Cate 1",
+        "description": "Simple cotton t-shirt, breathable and comfortable.",
+        "quantity": 100,
+        "price": 25,
+        "status": "In Stock",
+        "image": "uploads\/08.webp"
+    },
+    {
+        "id": 9,
+        "name": "Book 'Sapiens: A Brief History of Humankind'",
+        "category": "Cate 1",
+        "description": "The famous book about the history of humankind.",
+        "quantity": 200,
+        "price": 20,
+        "status": "In Stock",
+        "image": "uploads\/09.webp"
+    },
+    {
+        "id": 10,
+        "name": "Natural Wood Bookshelf",
+        "category": "Cate 2",
+        "description": "Bookshelf made from natural wood, durable and beautiful.",
+        "quantity": 5,
+        "price": 250,
+        "status": "Out of Stock",
+        "image": "uploads\/10.jpg"
+    }
+]
