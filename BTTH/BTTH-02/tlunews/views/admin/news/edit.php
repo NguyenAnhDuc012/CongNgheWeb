@@ -1,0 +1,1 @@
+<!-- views/admin/news/edit.php -->
