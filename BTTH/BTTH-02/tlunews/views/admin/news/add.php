@@ -14,8 +14,7 @@
 
         <h2 class="mb-4">Add News</h2>
 
-        <!-- Add News Form -->
-        <form method="POST" enctype="multipart/form-data">
+        <form action="index.php?controller=admin&action=add" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" id="title" name="title" class="form-control" required>
@@ -29,7 +28,7 @@
             <div class="mb-3">
                 <label for="category_id" class="form-label">Category</label>
                 <select id="category_id" name="category_id" class="form-select" required>
-                    <?php foreach ($Categories as $category): ?>
+                    <?php foreach ($categories as $category): ?>
                         <option value="<?= $category->getId() ?>"><?= htmlspecialchars($category->getName()) ?></option>
                     <?php endforeach; ?>
                 </select>

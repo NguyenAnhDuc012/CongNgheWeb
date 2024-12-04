@@ -1,14 +1,17 @@
 <?php
 //controllers/HomeController.php
-require_once 'models/News.php';
+require_once 'services/NewsService.php';
+require_once 'services/CategoryService.php';
 
 class HomeController
 {
     public function index()
     {
-        $newsModel = new News();
-        $news = $newsModel->getAllNews();
+        $newsService = new NewsService();
+        $news = $newsService->getAllNews();
 
+        $categoryService = new CategoryService();
+        $categories = $categoryService->getAllCategories();
         require_once 'views/home/index.php';
     }
 }

@@ -13,13 +13,26 @@
     <div class="container mt-4">
         <a href="index.php" class="btn btn-secondary mb-3">Back to Home</a>
 
-        <h1><?= htmlspecialchars($newsItem['title']) ?></h1>
-        <p><strong>Category:</strong> <?= htmlspecialchars($newsItem['category_name'] ?? 'Unknown') ?></p>
-        <p><strong>Created At:</strong> <?= htmlspecialchars($newsItem['created_at']) ?></p>
+        <h1><?= $news->getTitle(); ?></h1>
+        <p><strong>Category:</strong>
+            <?php
+            $category = null;
+            if (!empty($categories)) {
+                foreach ($categories as $cat) {
+                    if ($cat->getId() == $news->getCategoryId()) {
+                        $category = $cat;
+                        break;
+                    }
+                }
+            }
+            echo $category ? $category->getName() : 'N/A';
+            ?>
+        </p>
+        <p><strong>Created At:</strong> <?= $news->getCreatedAt() ?></p>
         <p><strong>Content:</strong></p>
-        <p><?= nl2br(htmlspecialchars($newsItem['content'])) ?></p>
+        <p><?= $news->getContent() ?></p>
         <p><strong>Image:</strong></p>
-        <img src="<?= htmlspecialchars($newsItem['image']) ?>" alt="Image" class="img-fluid">
+        <img src="<?= $news->getImage() ?>" alt="Image" class="img-fluid">
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

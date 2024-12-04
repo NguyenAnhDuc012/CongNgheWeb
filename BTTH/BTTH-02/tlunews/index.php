@@ -1,28 +1,31 @@
 <?php
-// index.php
+
+
 session_start();
-
-$controller = $_GET['controller'] ?? 'home';
-$action = $_GET['action'] ?? 'index';
-
-$controllerFile = 'controllers/' . ucfirst($controller) . 'Controller.php';
-
-if (file_exists($controllerFile)) {
-    require_once $controllerFile;
-    $controllerClass = ucfirst($controller) . 'Controller';
-    $controllerObj = new $controllerClass();
-    if ($action == 'detail') {
-        $id = $_GET['id'] ?? null;
-        $controllerObj->$action($id);
+spl_autoload_register(function ($class) {
+    if (file_exists("controllers/$class.php")) {
+        require_once "controllers/$class.php";
+    } elseif (file_exists("models/$class.php")) {
+        require_once "models/$class.php";
     }
-    else if ($action == 'deleteNews') {
-        $id = $_GET['id'] ?? null;
-        $controllerObj->$action($id);
-    } else {
-        $controllerObj->$action();
-    }
+});
+
+$controllerName = $_GET['controller'] ?? 'home';
+$actionName = $_GET['action'] ?? 'index';
+
+$controllerClass = ucfirst($controllerName) . 'Controller';
+if (!class_exists($controllerClass)) {
+    die("Controller $controllerClass not found.");
+}
+
+$controller = new $controllerClass();
+
+if (!method_exists($controller, $actionName)) {
+    die("Action $actionName not found in $controllerClass.");
+}
+
+if ($actionName == "detail" || $actionName == "delete" || $actionName == "edit") {
+    $controller->$actionName($_GET['id']);
 } else {
-    require_once 'controllers/HomeController.php';
-    $controllerObj = new HomeController();
-    $controllerObj->index();
+    $controller->$actionName();
 }
