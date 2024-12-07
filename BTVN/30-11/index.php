@@ -1,29 +1,7 @@
 <?php
 // index.php
 
-// session_start();
-
-// $controller = $_GET['controller'] ?? 'product';
-// $action = $_GET['action'] ?? 'index';
-
-// $controllerFile = 'controllers/' . ucfirst($controller) . 'Controller.php';
-
-// if (file_exists($controllerFile)) {
-//     require_once $controllerFile;
-//     $controllerClass = ucfirst($controller) . 'Controller';
-//     $controllerObj = new $controllerClass();
-//     if ($action == 'edit' || $action == 'delete') {
-//         $id = $_GET['id'] ?? null;
-//         $controllerObj->$action($id);
-//     } else {
-//         $controllerObj->$action();
-//     }
-// } else {
-//     require_once 'controllers/ProductController.php';
-//     $controllerObj = new ProductController();
-//     $controllerObj->index();
-// }
-
+session_start();
 
 // Tự động tải các file cần thiết
 spl_autoload_register(function ($class) {
@@ -53,7 +31,7 @@ if (!method_exists($controller, $actionName)) {
 }
 
 // Gọi Action
-if ($actionName == "edit" || $actionName == "delete") {
+if (isset($_GET['id'])) {
     $controller->$actionName($_GET['id']);
 } else {
     $controller->$actionName();

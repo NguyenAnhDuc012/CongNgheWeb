@@ -15,10 +15,10 @@ class CategoryService
     public function getAllCategories()
     {
         $query = "SELECT * FROM category";
-        $result = $this->db->getConnection()->query($query);
+        $stmt = $this->db->getConnection()->query($query);
 
         $categories = [];
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $categories[] = new Category($row['id'], $row['name']);
         }
 

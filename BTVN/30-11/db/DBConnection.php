@@ -3,22 +3,20 @@
 <?php
 class DBConnection
 {
-    private $host = "localhost";
+    private $servername = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "products";
+    private $myDB = "products";
 
     public $conn;
 
     public function __construct()
     {
         try {
-            $this->conn = new mysqli($this->host, $this->username, $this->password, $this->dbname);
-            if ($this->conn->connect_error) {
-                throw new Exception("Connection failed: " . $this->conn->connect_error);
-            }
-        } catch (Exception $e) {
-            die("Database connection error: " . $e->getMessage());
+            $this->conn = new PDO("mysql:host=$this->servername;dbname=$this->myDB", $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Connection failed: " . $e->getMessage());
         }
     }
 
@@ -29,7 +27,7 @@ class DBConnection
 
     public function closeConnection()
     {
-        $this->conn->close();
+        $this->conn = null;
     }
 }
 ?>

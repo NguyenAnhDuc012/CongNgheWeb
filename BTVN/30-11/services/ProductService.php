@@ -15,10 +15,10 @@ class ProductService
     public function getAllProducts()
     {
         $query = "SELECT * FROM products";
-        $result = $this->db->getConnection()->query($query);
+        $stmt = $this->db->getConnection()->query($query);
 
         $products = [];
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $products[] = new Product($row['id'], $row['image'], $row['name'], $row['description'], $row['quantity'], $row['price'], $row['status'], $row['category_id']);
         }
 
@@ -27,13 +27,13 @@ class ProductService
 
     public function getProductById($id)
     {
-        $query = "SELECT * FROM products WHERE id = ?";
+        $query = "SELECT * FROM products WHERE id = :id";
         $stmt = $this->db->getConnection()->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
 
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
             return new Product($row['id'], $row['image'], $row['name'], $row['description'], $row['quantity'], $row['price'], $row['status'], $row['category_id']);
         }
 
@@ -42,25 +42,44 @@ class ProductService
 
     public function addProduct($product)
     {
-        $query = "INSERT INTO products (image, name, description, quantity, price, status, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO products (image, name, description, quantity, price, status, category_id) 
+                  VALUES (:image, :name, :description, :quantity, :price, :status, :category_id)";
         $stmt = $this->db->getConnection()->prepare($query);
-        $stmt->bind_param("sssiisi", $product->getImage(), $product->getName(), $product->getDescription(), $product->getQuantity(), $product->getPrice(), $product->getStatus(), $product->getCategoryId());
+
+        $stmt->bindParam(':image', $product->getImage());
+        $stmt->bindParam(':name', $product->getName());
+        $stmt->bindParam(':description', $product->getDescription());
+        $stmt->bindParam(':quantity', $product->getQuantity());
+        $stmt->bindParam(':price', $product->getPrice());
+        $stmt->bindParam(':status', $product->getStatus());
+        $stmt->bindParam(':category_id', $product->getCategoryId());
+
         return $stmt->execute();
     }
 
     public function updateProduct($product)
     {
-        $query = "UPDATE products SET image = ?, name = ?, description = ?, quantity = ?, price = ?, status = ?, category_id = ? WHERE id = ?";
+        $query = "UPDATE products SET image = :image, name = :name, description = :description, quantity = :quantity, 
+                  price = :price, status = :status, category_id = :category_id WHERE id = :id";
         $stmt = $this->db->getConnection()->prepare($query);
-        $stmt->bind_param("sssiisii", $product->getImage(), $product->getName(), $product->getDescription(), $product->getQuantity(), $product->getPrice(), $product->getStatus(), $product->getCategoryId(), $product->getId());
+
+        $stmt->bindParam(':image', $product->getImage());
+        $stmt->bindParam(':name', $product->getName());
+        $stmt->bindParam(':description', $product->getDescription());
+        $stmt->bindParam(':quantity', $product->getQuantity());
+        $stmt->bindParam(':price', $product->getPrice());
+        $stmt->bindParam(':status', $product->getStatus());
+        $stmt->bindParam(':category_id', $product->getCategoryId());
+        $stmt->bindParam(':id', $product->getId());
+
         return $stmt->execute();
     }
 
     public function deleteProduct($id)
     {
-        $query = "DELETE FROM products WHERE id = ?";
+        $query = "DELETE FROM products WHERE id = :id";
         $stmt = $this->db->getConnection()->prepare($query);
-        $stmt->bind_param("i", $id);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
 }

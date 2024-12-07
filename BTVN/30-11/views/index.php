@@ -16,12 +16,12 @@
     <div class="container mt-5 mb-5">
         <a href="index.php?controller=product&action=add" class="btn btn-success mb-3">New product</a>
 
-        <?php if (isset($_GET['success']) && $_GET['success'] == 'true'): ?>
-            <div class="alert alert-success" id="success-message">
-                Action completed successfully!
-            </div>
-        <?php endif; ?>
-
+        <?php
+        if (isset($_SESSION['success_message'])) {
+            echo '<div id="success-message" class="alert alert-success">' . $_SESSION['success_message'] . '</div>';
+            unset($_SESSION['success_message']);
+        }
+        ?>
 
         <table class="table table-striped">
             <thead>
@@ -72,14 +72,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        <?php if (isset($_GET['success']) && $_GET['success'] == 'true'): ?>
-            setTimeout(function() {
-                var successMessage = document.getElementById('success-message');
-                if (successMessage) {
+        window.onload = function() {
+            var successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                setTimeout(function() {
                     successMessage.style.display = 'none';
-                }
-            }, 3000); // 3 giây
-        <?php endif; ?>
+                }, 2000);
+            }
+        };
     </script>
 
 </body>

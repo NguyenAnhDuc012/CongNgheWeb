@@ -26,18 +26,43 @@ class ProductController
 
     public function add()
     {
-        $errorMessages = [];
+        $errors = [
+            'name' => '',
+            'description' => '',
+            'quantity' => '',
+            'price' => '',
+            'category_id' => '',
+            'image' => '',
+        ];
+
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name = $_POST['name'];
             $description = $_POST['description'];
             $quantity = $_POST['quantity'];
             $price = $_POST['price'];
-            $status = $_POST['status'];
+            $status = isset($_POST['status']) ? $_POST['status'] : 'active';
             $category_id = $_POST['category_id'];
+            $image = null;
 
-            if (empty($name) || empty($description) || empty($quantity) || empty($price) || empty($category_id)) {
-                $errorMessages[] = "All fields are required!";
+            if (empty($name)) {
+                $errors['name'] = "Product name is required!";
+            }
+
+            if (empty($description)) {
+                $errors['description'] = "Description is required!";
+            }
+
+            if (empty($quantity)) {
+                $errors['quantity'] = "Quantity is required!";
+            }
+
+            if (empty($price)) {
+                $errors['price'] = "Price is required!";
+            }
+
+            if (empty($category_id)) {
+                $errors['category_id'] = "Category is required!";
             }
 
             if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -45,19 +70,16 @@ class ProductController
                 if (strpos($imageUploadResult, 'Error') === false && strpos($imageUploadResult, 'Invalid') === false && strpos($imageUploadResult, 'too large') === false) {
                     $image = $imageUploadResult;
                 } else {
-                    $errorMessages[] = $imageUploadResult;
+                    $errors['image'] = $imageUploadResult;
                 }
-            } else {
-                $errorMessages[] = "Image is required!";
             }
 
-            if (empty($errorMessages)) {
+            if (empty(array_filter($errors))) {
                 $product = new Product(null, $image, $name, $description, $quantity, $price, $status, $category_id);
                 if ($this->productService->addProduct($product)) {
-                    header("Location: index.php?controller=product&action=index&success=true");
+                    $_SESSION['success_message'] = "Product added successfully!";
+                    header("Location: index.php?controller=product&action=index");
                     exit();
-                } else {
-                    $errorMessages[] = "Error adding product!";
                 }
             }
         }
@@ -95,47 +117,86 @@ class ProductController
     public function edit($id)
     {
         $product = $this->productService->getProductById($id);
-        $currentImage = $product->getImage();
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $product->setName($_POST['name']);
-            $product->setDescription($_POST['description']);
-            $product->setQuantity($_POST['quantity']);
-            $product->setPrice($_POST['price']);
-            $product->setStatus($_POST['status']);
-            $product->setCategoryId($_POST['category_id']);
-
-            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                $imageUploadResult = $this->uploadImage($_FILES['image']);
-                if (strpos($imageUploadResult, 'Error') === false && strpos($imageUploadResult, 'Invalid') === false && strpos($imageUploadResult, 'too large') === false) {
-                    $product->setImage($imageUploadResult);
-                } else {
-                    $errorMessages[] = $imageUploadResult;
-                }
-            } else {
-                $product->setImage($currentImage);
-            }
-
-            if (empty($errorMessages)) {
-                if ($this->productService->updateProduct($product)) {
-                    header("Location: index.php?controller=product&action=index&success=true");
-                    exit();
-                } else {
-                    $errorMessages[] = "Error updating product!";
-                }
-            }
+        if (!$product) {
+            header("Location: index.php?controller=product&action=index&error=Product not found!");
+            exit();
         }
 
         $categoryService = new CategoryService();
         $categories = $categoryService->getAllCategories();
+
+        $errors = [
+            'name' => '',
+            'description' => '',
+            'quantity' => '',
+            'price' => '',
+            'category_id' => '',
+            'image' => '',
+        ];
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $name = $_POST['name'];
+            $description = $_POST['description'];
+            $quantity = $_POST['quantity'];
+            $price = $_POST['price'];
+            $status = isset($_POST['status']) ? $_POST['status'] : 'active';
+            $category_id = $_POST['category_id'];
+            $image = $product->getImage();
+
+            if (empty($name)) {
+                $errors['name'] = "Product name is required!";
+            }
+
+            if (empty($description)) {
+                $errors['description'] = "Description is required!";
+            }
+
+            if (empty($quantity)) {
+                $errors['quantity'] = "Quantity is required!";
+            }
+
+            if (empty($price)) {
+                $errors['price'] = "Price is required!";
+            }
+
+            if (empty($category_id)) {
+                $errors['category_id'] = "Category is required!";
+            }
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                $imageUploadResult = $this->uploadImage($_FILES['image']);
+                if (strpos($imageUploadResult, 'Error') === false && strpos($imageUploadResult, 'Invalid') === false && strpos($imageUploadResult, 'too large') === false) {
+                    $image = $imageUploadResult;
+                } else {
+                    $errors['image'] = $imageUploadResult;
+                }
+            }
+
+            if (empty(array_filter($errors))) {
+                $product->setName($name);
+                $product->setDescription($description);
+                $product->setQuantity($quantity);
+                $product->setPrice($price);
+                $product->setStatus($status);
+                $product->setCategoryId($category_id);
+                $product->setImage($image);
+
+                if ($this->productService->updateProduct($product)) {
+                    $_SESSION['success_message'] = "Product updated successfully!";
+                    header("Location: index.php?controller=product&action=index");
+                    exit();
+                }
+            }
+        }
+
         include 'views/edit.php';
     }
-
 
     public function delete($id)
     {
         if ($this->productService->deleteProduct($id)) {
-            header("Location: index.php?controller=product&action=index&success=true");
+            $_SESSION['success_message'] = "Product deleted successfully!";
+            header("Location: index.php?controller=product&action=index");
             exit();
         } else {
             echo "Error deleting product!";

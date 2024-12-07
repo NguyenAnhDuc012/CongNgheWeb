@@ -18,36 +18,40 @@
                 <a href="index.php" class="btn btn-secondary mt-3">Back to list</a>
                 <h2>Add New Product</h2>
 
-                <?php if (!empty($errorMessages)): ?>
-                    <div class="alert alert-danger">
-                        <ul>
-                            <?php foreach ($errorMessages as $error): ?>
-                                <li><?php echo $error; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+
 
                 <form action="index.php?controller=product&action=edit&id=<?php echo $product->getId(); ?>" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="name" class="form-label">Product Name</label>
-                        <input type="text" name="name" class="form-control" id="name" value="<?php echo $product->getName(); ?>" required>
+                        <input type="text" name="name" class="form-control" id="name" value="<?php echo $product->getName(); ?>">
+                        <?php if ($errors['name']): ?>
+                            <div class="text-danger"><?php echo $errors['name']; ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea name="description" class="form-control" id="description" required><?php echo $product->getDescription(); ?></textarea>
+                        <textarea name="description" class="form-control" id="description"><?php echo $product->getDescription(); ?></textarea>
+                        <?php if ($errors['description']): ?>
+                            <div class="text-danger"><?php echo $errors['description']; ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" name="quantity" class="form-control" id="quantity" value="<?php echo $product->getQuantity(); ?>" required>
+                        <input type="number" name="quantity" class="form-control" id="quantity" value="<?php echo $product->getQuantity(); ?>">
+                        <?php if ($errors['quantity']): ?>
+                            <div class="text-danger"><?php echo $errors['quantity']; ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" name="price" class="form-control" id="price" value="<?php echo $product->getPrice(); ?>" required>
+                        <input type="number" name="price" class="form-control" id="price" value="<?php echo $product->getPrice(); ?>">
+                        <?php if ($errors['price']): ?>
+                            <div class="text-danger"><?php echo $errors['price']; ?></div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-3">
                         <label for="category_id" class="form-label">Category</label>
-                        <select name="category_id" class="form-control" id="category_id" required>
+                        <select name="category_id" class="form-control" id="category_id">
                             <?php foreach ($categories as $category): ?>
                                 <option value="<?php echo $category->getId(); ?>" <?php echo $product->getCategoryId() == $category->getId() ? 'selected' : ''; ?>>
                                     <?php echo $category->getName(); ?>
@@ -73,6 +77,9 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Product Image</label>
                         <input type="file" name="image" class="form-control" id="image">
+                        <?php if ($errors['image']): ?>
+                            <div class="text-danger"><?php echo $errors['image']; ?></div>
+                        <?php endif; ?>
                         <div class="mt-2">
                             <img src="<?php echo $product->getImage(); ?>" alt="Product Image" style="width: 100px;">
                         </div>

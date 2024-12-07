@@ -18,53 +18,64 @@
                 <a href="index.php" class="btn btn-secondary mt-3">Back to list</a>
                 <h2>Add New Product</h2>
 
-                <?php if (!empty($errorMessages)): ?>
-                    <div class="alert alert-danger">
-                        <ul>
-                            <?php foreach ($errorMessages as $error): ?>
-                                <li><?php echo $error; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-
                 <form action="index.php?controller=product&action=add" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="name" class="form-label">Product Name</label>
-                        <input type="text" name="name" class="form-control" id="name" required>
+                        <input type="text" name="name" class="form-control" id="name" value="<?php echo htmlspecialchars($name ?? ''); ?>">
+                        <?php if ($errors['name']): ?>
+                            <div class="text-danger"><?php echo $errors['name']; ?></div>
+                        <?php endif; ?>
                     </div>
+
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea name="description" class="form-control" id="description" required></textarea>
+                        <textarea name="description" class="form-control" id="description"><?php echo htmlspecialchars($description ?? ''); ?></textarea>
+                        <?php if ($errors['description']): ?>
+                            <div class="text-danger"><?php echo $errors['description']; ?></div>
+                        <?php endif; ?>
                     </div>
+
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" name="quantity" class="form-control" id="quantity" required>
+                        <input type="number" name="quantity" class="form-control" id="quantity" value="<?php echo htmlspecialchars($quantity ?? ''); ?>">
+                        <?php if ($errors['quantity']): ?>
+                            <div class="text-danger"><?php echo $errors['quantity']; ?></div>
+                        <?php endif; ?>
                     </div>
+
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" name="price" class="form-control" id="price" required>
+                        <input type="number" name="price" class="form-control" id="price" value="<?php echo htmlspecialchars($price ?? ''); ?>">
+                        <?php if ($errors['price']): ?>
+                            <div class="text-danger"><?php echo $errors['price']; ?></div>
+                        <?php endif; ?>
                     </div>
+
                     <div class="mb-3">
                         <label for="category_id" class="form-label">Category</label>
-                        <select name="category_id" class="form-control" id="category_id" required>
+                        <select name="category_id" class="form-control" id="category_id">
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></option>
+                                <option value="<?php echo $category->getId(); ?>" <?php echo ($category->getId() == ($category_id ?? '')) ? 'selected' : ''; ?>>
+                                    <?php echo $category->getName(); ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
+                        <?php if ($errors['category_id']): ?>
+                            <div class="text-danger"><?php echo $errors['category_id']; ?></div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Status</label>
                         <div class="d-flex">
                             <div class="form-check me-3">
-                                <input class="form-check-input" type="radio" name="status" id="status_active" value="active" checked>
+                                <input class="form-check-input" type="radio" name="status" id="status_active" value="active" <?php echo ($status ?? '') == 'active' ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="status_active">
                                     Active
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="status" id="status_inactive" value="inactive">
+                                <input class="form-check-input" type="radio" name="status" id="status_inactive" value="inactive" <?php echo ($status ?? '') == 'inactive' ? 'checked' : ''; ?>>
                                 <label class="form-check-label" for="status_inactive">
                                     Inactive
                                 </label>
@@ -74,10 +85,15 @@
 
                     <div class="mb-3">
                         <label for="image" class="form-label">Product Image</label>
-                        <input type="file" name="image" class="form-control" id="image" required>
+                        <input type="file" name="image" class="form-control" id="image">
+                        <?php if ($errors['image']): ?>
+                            <div class="text-danger"><?php echo $errors['image']; ?></div>
+                        <?php endif; ?>
                     </div>
+
                     <button type="submit" class="btn btn-primary">Add Product</button>
                 </form>
+
             </div>
             <div class="col-md-4"></div>
         </div>
