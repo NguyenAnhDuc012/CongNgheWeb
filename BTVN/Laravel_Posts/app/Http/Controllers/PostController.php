@@ -11,54 +11,62 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')->paginate(5);
-        return view('home', compact('posts'));
+        return view('posts.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
+
+        Post::create($request->all());
+
+        return redirect()->route('posts.index')
+            ->with('success', 'Post created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
-        //
+        $post = Post::find($id);
+        $currentPage = $request->query('page', 1);
+
+        return view('posts.edit', compact('post', 'currentPage'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+        ]);
+
+        $post = Post::find($id);
+        $post->update($request->all());
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('posts.index', ['page' => $currentPage])
+            ->with('success', 'Post updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        $currentPage = $request->query('page', 1);
+
+        return redirect()->route('posts.index', ['page' => $currentPage])
+            ->with('success', 'Post deleted successfully');
     }
 }

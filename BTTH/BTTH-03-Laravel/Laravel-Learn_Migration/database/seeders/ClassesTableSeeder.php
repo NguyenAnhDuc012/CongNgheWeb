@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class ClassesTableSeeder extends Seeder
 {
@@ -13,14 +15,13 @@ class ClassesTableSeeder extends Seeder
      */
     public function run(): void
     {
+        $faker = Faker::create();
         $classes = [];
+
         for ($i = 1; $i <= 10; $i++) {
             $classes[] = [
-                'id' => $i,
-                'grade_level' => $i % 2 === 0 ? 'Kindergarten' : 'Pre-K',
+                'grade_level' => $faker->randomElement(['Pre-K', 'Kindergarten']),
                 'room_number' => 'Room-' . $i,
-                'created_at' => now(),
-                'updated_at' => now(),
             ];
         }
 
