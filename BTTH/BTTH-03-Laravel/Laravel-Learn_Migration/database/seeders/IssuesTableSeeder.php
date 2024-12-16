@@ -16,17 +16,16 @@ class IssuesTableSeeder extends Seeder
     {
         $faker = Faker::create();
         $issues = [];
+        $computerIds = DB::table('computers')->pluck('id');
 
         for ($i = 1; $i <= 50; $i++) {
             $issues[] = [
-                'computer_id' => $faker->numberBetween(1, 10),
+                'computer_id' => $faker->randomElement($computerIds),
                 'reported_by' => $faker->name(),
                 'reported_date' => $faker->dateTimeThisYear(),
                 'description' => $faker->text(),
                 'urgency' => $faker->randomElement(['Low', 'Medium', 'High']),
                 'status' => $faker->randomElement(['Open', 'In Progress', 'Resolved']),
-                'created_at' => now(),
-                'updated_at' => now(),
             ];
         }
 

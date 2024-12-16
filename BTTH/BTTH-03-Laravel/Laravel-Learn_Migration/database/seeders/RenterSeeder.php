@@ -4,7 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Renter;
+
+use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
 class RenterSeeder extends Seeder
@@ -15,13 +16,14 @@ class RenterSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-
+        $renters = [];
         for ($i = 1; $i <= 10; $i++) {
-            Renter::create([
+            $renters[] = [
                 'name' => $faker->name,
                 'phone_number' => $faker->phoneNumber,
                 'email' => $faker->unique()->email,
-            ]);
+            ];
         }
+        DB::table('renters')->insert($renters);
     }
 }

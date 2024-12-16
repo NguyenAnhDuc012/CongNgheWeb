@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
@@ -15,15 +16,14 @@ class ItCentersSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-
+        $Itcenters = [];
         for ($i = 0; $i < 10; $i++) {
-            DB::table('it_centers')->insert([
+            $Itcenters[] = [
                 'name' => $faker->company,
                 'location' => $faker->address,
                 'contact_email' => $faker->unique()->safeEmail,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            ];
         }
+        DB::table('it_centers')->insert($Itcenters);
     }
 }

@@ -25,8 +25,6 @@ class ComputersTableSeeder extends Seeder
                 'processor' => $faker->randomElement(['Intel Core i5', 'Intel Core i7', 'AMD Ryzen 5']),
                 'memory' => $faker->numberBetween(4, 16),
                 'available' => $faker->boolean(),
-                'created_at' => now(),
-                'updated_at' => now(),
             ];
         }
 
