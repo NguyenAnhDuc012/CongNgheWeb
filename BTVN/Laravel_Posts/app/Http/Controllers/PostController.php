@@ -7,7 +7,6 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')->paginate(5);
@@ -21,52 +20,39 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
-
-        Post::create($request->all());
-
+        Post::create($validatedData);
         return redirect()->route('posts.index')
             ->with('success', 'Post created successfully.');
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function edit(Request $request, string $id)
+    public function edit($id)
     {
         $post = Post::find($id);
-        $currentPage = $request->query('page', 1);
-
-        return view('posts.edit', compact('post', 'currentPage'));
+        return view('posts.edit', compact('post'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
         ]);
-
         $post = Post::find($id);
-        $post->update($request->all());
-        $currentPage = $request->query('page', 1);
-
-        return redirect()->route('posts.index', ['page' => $currentPage])
+        $post->update($validatedData);
+        return redirect()->route('posts.index')
             ->with('success', 'Post updated successfully.');
     }
 
-    public function destroy(Request $request, string $id)
+    public function destroy($id)
     {
         $post = Post::find($id);
         $post->delete();
-        $currentPage = $request->query('page', 1);
 
-        return redirect()->route('posts.index', ['page' => $currentPage])
+        return redirect()->route('posts.index')
             ->with('success', 'Post deleted successfully');
     }
 }

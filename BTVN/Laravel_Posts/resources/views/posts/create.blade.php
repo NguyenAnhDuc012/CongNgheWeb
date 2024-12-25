@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>My Crud</title>
+    <title>Posts Crud</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -23,7 +23,7 @@
                 <form action="{{ route('posts.store') }}" method="post">
                     @csrf
                     <div class="modal-header">
-                        <h4 class="modal-title">Add Post</h4>
+                        <h4 class="modal-title">Add Employee</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -36,7 +36,7 @@
 
                         <div class="form-group">
                             <label>Content</label>
-                            <textarea name="content" class="form-control @error('content') is-invalid @enderror">{{ old('content') }}</textarea>
+                            <textarea rows="5" name="content" class="form-control @error('content') is-invalid @enderror">{{ old('content') }}</textarea>
                             @error('content')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

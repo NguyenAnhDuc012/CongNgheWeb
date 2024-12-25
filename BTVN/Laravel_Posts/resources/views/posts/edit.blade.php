@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>My Crud</title>
+    <title>Posts Crud</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -20,7 +20,7 @@
     <div id="addEmployeeModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('posts.update', ['id' => $post->id, 'page' => request('page')]) }}" method="post">
+                <form action="{{ route('posts.update', $post->id) }}" method="post">
                     @csrf
                     @method('PUT')
                     <div class="modal-header">
@@ -29,7 +29,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Title</label>
-                            <input value="{{ $post->title }}" name="title" type="text" class="form-control @error('title') is-invalid @enderror">
+                            <input value="{{ old('title', $post->title) }}" name="title" type="text" class="form-control @error('title') is-invalid @enderror">
                             @error('title')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -37,7 +37,7 @@
 
                         <div class="form-group">
                             <label>Content</label>
-                            <textarea name="content" class="form-control @error('content') is-invalid @enderror">{{ $post->content }}</textarea>
+                            <textarea rows="5" name="content" class="form-control @error('content') is-invalid @enderror">{{ old('content', $post->content) }}</textarea>
                             @error('content')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
@@ -45,7 +45,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ route('posts.index', ['page' => $currentPage]) }}" class="btn btn-secondary">Cancel</a>
+                        <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancel</a>
                         <input type="submit" class="btn btn-success" value="Update">
                     </div>
                 </form>
