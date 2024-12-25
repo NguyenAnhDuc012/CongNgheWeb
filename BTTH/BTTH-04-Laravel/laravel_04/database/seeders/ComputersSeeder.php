@@ -10,7 +10,6 @@ use Faker\Factory as Faker;
 
 class ComputersSeeder extends Seeder
 {
-
     public function run(): void
     {
         $faker = Faker::create();

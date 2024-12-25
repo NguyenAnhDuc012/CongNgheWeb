@@ -10,7 +10,7 @@ class IssuesController extends Controller
 {
     public function index()
     {
-        $issues = Issue::with('computer')->orderBy('id', 'desc')->paginate(5);
+        $issues = Issue::with('computer_hello')->orderBy('id', 'desc')->paginate(10);
         return view('issues.index', compact('issues'));
     }
 
@@ -22,29 +22,31 @@ class IssuesController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'computer_id' => 'required',
+            'reported_by' => 'nullable',
             'reported_date' => 'required|date',
             'description' => 'required',
             'urgency' => 'required',
             'status' => 'required',
         ]);
 
-        Issue::create($request->all());
+        Issue::create($validatedData);
         return redirect()->route('issues.index')->with('success', 'The issue has been added successfully!');
     }
 
     public function edit($id)
     {
-        $issue = Issue::findOrFail($id);
+        $issue = Issue::find($id);
         $computers = Computer::all();
         return view('issues.edit', compact('issue', 'computers'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'computer_id' => 'required',
+            'reported_by' => 'nullable',
             'reported_date' => 'required|date',
             'description' => 'required',
             'urgency' => 'required',
@@ -52,13 +54,13 @@ class IssuesController extends Controller
         ]);
 
         $issue = Issue::find($id);
-        $issue->update($request->all());
+        $issue->update($validatedData);
         return redirect()->route('issues.index')->with('success', 'Issue updated successfully');
     }
 
     public function destroy($id)
     {
-        $issue = Issue::findOrFail($id);
+        $issue = Issue::find($id);
         $issue->delete();
         return redirect()->route('issues.index')->with('success', 'The issue has been successfully deleted!');
     }

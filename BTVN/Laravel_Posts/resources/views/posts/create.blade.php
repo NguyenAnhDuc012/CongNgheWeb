@@ -23,7 +23,7 @@
                 <form action="{{ route('posts.store') }}" method="post">
                     @csrf
                     <div class="modal-header">
-                        <h4 class="modal-title">Add Employee</h4>
+                        <h4 class="modal-title">Add Post</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">

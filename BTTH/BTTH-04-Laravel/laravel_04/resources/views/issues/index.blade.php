@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Posts Crud</title>
+    <title>Issues Crud</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -23,10 +23,10 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2>Manage <b>Posts</b></h2>
+                            <h2>Manage <b>Issues</b></h2>
                         </div>
                         <div class="col-sm-6">
-                            <a href="{{ route('posts.create') }}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add New Post</span></a>
+                            <a href="{{ route('issues.create') }}" class="btn btn-success"><i class="material-icons">&#xE147;</i> <span>Add New Issues</span></a>
                         </div>
                     </div>
                 </div>
@@ -40,46 +40,54 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Content</th>
-                            <th>Actions</th>
+                            <th>Id</th>
+                            <th>Computer Name</th>
+                            <th>Model</th>
+                            <th>Reported Person</th>
+                            <th>Reported Date</th>
+                            <th>Urgency</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($posts as $post)
+                        @foreach($issues as $issue)
                         <tr>
-                            <td>{{ $post->id }}</td>
-                            <td>{{ $post->title }}</td>
-                            <td>{{ $post->content }}</td>
+                            <td>{{ $issue->id }}</td>
+                            <td>{{ $issue->computer_hello->computer_name ?? 'N/A' }}</td>
+                            <td>{{ $issue->computer_hello->model ?? 'N/A'}} </td>
+                            <td>{{ $issue->reported_by }}</td>
+                            <td>{{ date('m-d-Y', strtotime($issue->reported_date)) }}</td>
+                            <td>{{ $issue->urgency }}</td>
+                            <td>{{ $issue->status }}</td>
                             <td>
-                                <a href="{{ route('posts.edit', $post->id) }}" class="edit"><i class="material-icons">&#xE254;</i></a>
-                                <a href="#deletePostModal" data-id="{{ $post->id }}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="{{ route('issues.edit', $issue->id) }}" class="edit"><i class="material-icons">&#xE254;</i></a>
+                                <a href="#deleteIssueModal" data-id="{{ $issue->id }}" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <div class="clearfix d-flex justify-content-start">
-                    {{ $posts->links() }}
+                    {{ $issues->links() }}
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Delete Modal HTML -->
-    <div id="deletePostModal" class="modal fade">
+    <div id="deleteIssueModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="deletePostForm" method="post">
+                <form id="deleteIssueForm" method="post">
                     @csrf
                     @method('DELETE')
                     <div class="modal-header">
-                        <h4 class="modal-title">Delete Post</h4>
+                        <h4 class="modal-title">Delete Issue</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure you want to delete this post?</p>
+                        <p>Are you sure you want to delete this Issue?</p>
                         <p class="text-warning"><small>This action cannot be undone.</small></p>
                     </div>
                     <div class="modal-footer">
@@ -94,10 +102,10 @@
     <script>
         $(document).ready(function() {
             $('.delete').on('click', function() {
-                var postId = $(this).data('id');
-                var actionUrl = "{{ route('posts.destroy', ':id') }}";
-                actionUrl = actionUrl.replace(':id', postId);
-                $('#deletePostForm').attr('action', actionUrl);
+                var issueId = $(this).data('id');
+                var actionUrl = "{{ route('issues.destroy', ':id') }}";
+                actionUrl = actionUrl.replace(':id', issueId);
+                $('#deleteIssueForm').attr('action', actionUrl);
             });
         });
     </script>
